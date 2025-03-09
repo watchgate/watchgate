@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Pricing</h2>
+<div class="row g-4 align-items-stretch">
+  <!-- Community Card -->
+  <div class="col-md-6 d-flex">
+    <div class="card text-center h-100 w-100 d-flex flex-column">
+      <div class="card-header">Community</div>
+      <div class="card-body flex-grow-1">
+        <h4 class="card-title">FREE</h4>
+        <h6="card-title">For Individuals and Security Researchers</h6>
+        <p class="card-text mt-3">
+          Enjoy our Community plan, featuring robust subdomain scanning, service enumeration, 
+          and dashboard analytics. Perfect for individuals and security researchers seeking to 
+          understand and secure their digital assets without any commitment.
+        </p>
+      </div>
+      <!-- Card Footer for the button -->
+      <div class="card-footer bg-white border-0">
+        <a href="{{ url_for('register', plan='community') }}" class="btn btn-primary">Create Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enterprise Card -->
+  <div class="col-md-6 d-flex">
+    <div class="card text-center h-100 w-100 d-flex flex-column">
+      <div class="card-header">Enterprise</div>
+      <div class="card-body flex-grow-1">
+        <!-- Toggle Switch for Monthly vs. Yearly -->
+        <div class="mb-3 d-flex justify-content-center align-items-center">
+          <span class="me-2">Monthly</span>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="billingToggle">
+          </div>
+          <span class="ms-2">Yearly</span>
+        </div>
+        <!-- Pricing Text that updates based on the toggle -->
+        <div id="pricingText" class="mb-3">
+          <h5 class="card-title">$40 / month</h5>
+        </div>
+        <p class="card-text">
+          WatchGate Enterprise is built for small businesses seeking comprehensive attack surface and 
+          exposure management. Go beyond subdomain scanning with prioritized vulnerability assessments, 
+          asset inventory management, and analytics in one powerful platform.
+        </p>
+      </div>
+      <!-- Card Footer for the button -->
+      <div class="card-footer bg-white border-0">
+        <a href="{{ url_for('register', plan='enterprise') }}" class="btn btn-success">Upgrade Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Small inline script to toggle pricing text -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const billingToggle = document.getElementById('billingToggle');
+  const pricingText = document.getElementById('pricingText');
+
+  // Default: show monthly pricing
+  billingToggle.checked = false;
+
+  billingToggle.addEventListener('change', function() {
+    if (billingToggle.checked) {
+      // Yearly plan
+      pricingText.innerHTML = '<h5 class="card-title">$400 / year</h5>';
+    } else {
+      // Monthly plan
+      pricingText.innerHTML = '<h5 class="card-title">$40 / month</h5>';
+    }
+  });
+});
+</script>
+{% endblock %}

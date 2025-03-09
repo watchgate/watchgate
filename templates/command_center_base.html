@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WatchGate Command Center</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Chart.js (for analytics charts) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Custom sidebar styling */
+    .sidebar {
+      background-color: #f8f9fa; /* Off-white background */
+      border-right: 1px solid #dee2e6; /* Slim border on the right */
+      min-height: 100vh; /* Full viewport height */
+      width: 230px; /* Adjusted width so "Command Center" fits on one line */
+    }
+    .sidebar .nav-link {
+      color: #333;
+      padding: 0.75rem 1rem;
+    }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover {
+      background-color: #e9ecef;
+      font-weight: bold;
+      color: #000;
+    }
+    /* Adjust main content to account for the wider sidebar */
+    .main-content {
+      margin-left: 200px; /* same as sidebar width */
+    }
+    /* Command Center top navbar */
+    .command-navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .command-navbar .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    /* Profile icon styling */
+    .profile-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="sidebar d-none d-md-block">
+        <div class="p-3">
+          <!-- WatchGate Logo in Sidebar -->
+          <div class="mb-4">
+            <span class="h4 mb-0">Watch<span style="color:#007BFF;">Gate</span></span>
+          </div>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                Command Center
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}" href="{{ url_for('analytics') }}">
+                Analytics
+              </a>
+            </li>
+            <!-- Additional sidebar links can be added here -->
+          </ul>
+        </div>
+      </nav>
+      <!-- Main Content Area -->
+      <main class="main-content col-md-10 ms-sm-auto col-lg-10 px-md-4">
+        <!-- Command Center Top Navbar -->
+        <nav class="navbar command-navbar">
+          <div class="container-fluid">
+            <span class="navbar-brand">WatchGate Command Center</span>
+            <div class="dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- Profile icon image -->
+                <img src="{{ url_for('static', filename='images/user.png') }}" alt="Profile" class="profile-icon">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                <li><a class="dropdown-item" href="{{ url_for('settings') }}">Settings</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('subscription') }}">Plan</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

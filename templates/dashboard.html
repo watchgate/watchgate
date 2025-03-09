@@ -1,0 +1,132 @@
+{% extends "command_center_base.html" %}
+{% block content %}
+<div class="dashboard">
+  <h2 class="mb-4"></h2>
+  <form id="scanForm" method="POST" action="{{ url_for('dashboard') }}" class="row g-3 mb-4">
+    <div class="col-md-5">
+      <label for="target" class="form-label">Enter Domain or IP to Scan</label>
+      <input type="text" name="target" id="target" class="form-control" placeholder="example.com or 192.168.1.1" required>
+    </div>
+    <div class="col-md-4">
+      <label for="scan_type" class="form-label">Select Scan Type</label>
+      <select name="scan_type" id="scan_type" class="form-select">
+        <option value="both">Subfinder &amp; Nmap</option>
+        <option value="subfinder">Subfinder Only</option>
+      </select>
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100">Run Scan</button>
+    </div>
+  </form>
+
+  <!-- Overall spinner and Stop Scan button -->
+  <div id="overallSpinner" class="d-none text-center mb-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Scanning in progress...</p>
+    <button id="stopScanButton" class="btn btn-danger">Stop Scan</button>
+  </div>
+
+  {% if error %}
+  <div class="alert alert-danger">
+    {{ error }}
+  </div>
+  {% endif %}
+
+  {% if subdomains and subdomains is not string %}
+  <h4>Subdomain Discovery &amp; Port Scan Results</h4>
+  <table class="table table-striped table-hover mt-3">
+    <thead>
+      <tr>
+        <th>Subdomain</th>
+        <th>IP Address</th>
+        <th>Open Ports</th>
+        <th>Web Services</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in subdomains %}
+      <tr>
+        <td>{{ item.subdomain }}</td>
+        <td>{{ item.ip }}</td>
+        <td>
+          {% if item.ports %}
+            {{ item.ports }}
+          {% else %}
+            <a href="{{ url_for('nmap_scan', subdomain=item.subdomain) }}" class="btn btn-sm btn-outline-secondary scan-port-button">
+              Scan Ports
+            </a>
+            <span class="spinner-border spinner-border-sm text-primary d-none scan-spinner" role="status" aria-hidden="true"></span>
+          {% endif %}
+        </td>
+        <td>
+          {% if item.web_services %}
+            {% for link in item.web_services.split(',') %}
+              <a href="{{ link.strip() }}" target="_blank">{{ link.strip() }}</a><br>
+            {% endfor %}
+          {% else %}
+            --
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% elif subdomains %}
+  <div class="alert alert-warning">
+    {{ subdomains }}
+  </div>
+  {% endif %}
+
+  {% if scan_results and scan_results is mapping %}
+  <h4>Nmap Results (Direct Scan)</h4>
+  <div>
+    <strong>Open Ports:</strong>
+    {% if scan_results.ports|length > 0 %}
+      {{ scan_results.ports }}
+    {% else %}
+      None
+    {% endif %}
+    <br>
+    <strong>Web Services:</strong>
+    {% if scan_results.web_services|length > 0 %}
+      <ul>
+      {% for url in scan_results.web_services %}
+        <li><a href="{{ url }}" target="_blank">{{ url }}</a></li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      None
+    {% endif %}
+  </div>
+  {% elif scan_results is string %}
+  <div class="alert alert-warning">
+    {{ scan_results }}
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  // Show overall spinner when the form is submitted
+  document.getElementById("scanForm").addEventListener("submit", function() {
+    document.getElementById("overallSpinner").classList.remove("d-none");
+  });
+  
+  // Add click event to each "Scan Ports" button to show its spinner and disable the button
+  document.querySelectorAll(".scan-port-button").forEach(function(button) {
+    button.addEventListener("click", function(e) {
+      button.classList.add("disabled");
+      const spinner = button.parentElement.querySelector(".scan-spinner");
+      if (spinner) {
+        spinner.classList.remove("d-none");
+      }
+    });
+  });
+  
+  // Stop Scan button functionality: redirect to /stop_scan
+  document.getElementById("stopScanButton")?.addEventListener("click", function() {
+    window.location.href = "{{ url_for('stop_scan') }}";
+  });
+</script>
+{% endblock %}

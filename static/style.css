@@ -1,0 +1,42 @@
+/* style.css */
+
+/* Override brand color (optional) */
+.btn-primary {
+    background-color: #007BFF;
+    border-color: #007BFF;
+}
+
+/* Hero image or main heading spacing on landing page */
+.display-5 {
+    margin-top: 2rem;
+}
+
+/* Example: customize card headers for pricing */
+.card-header {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Adjust footer spacing */
+footer {
+    margin-top: 2rem;
+}
+
+/* Example: override background for the body if desired */
+body {
+    background-color: #f9f9f9;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Text-based brand styling for the navbar */
+.brand-watch {
+    color: #fff;         /* White for "Watch" */
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+.brand-gate {
+    color: #007BFF;      /* Blue for "Gate" */
+    font-weight: bold;
+    font-size: 1.25rem;
+}

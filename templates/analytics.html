@@ -1,0 +1,46 @@
+{% extends "command_center_base.html" %}
+{% block content %}
+<div class="analytics">
+  <h2 class="mb-4"></h2>
+
+  <!-- Top-level summary row (4 cards) -->
+  <div class="row g-4 mb-4">
+    <!-- Card: Total Domains Scanned -->
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Domains Scanned</h5>
+          <p class="card-text display-6">{{ total_domains }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card: Total Subdomains Discovered -->
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Subdomains Discovered</h5>
+          <p class="card-text display-6">{{ total_subdomains }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card: Total Open Ports Discovered -->
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Open Ports</h5>
+          <p class="card-text display-6">{{ total_open_ports }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card: Total Web Ports Discovered -->
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Web Ports</h5>
+          <p class="card-text display-6">{{ total_web_ports }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
